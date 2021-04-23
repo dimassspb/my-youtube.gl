@@ -8,6 +8,7 @@ const musicList = document.querySelector('.music-list');
 const navMenuMore = document.querySelector('.nav-menu-more');
 const showMore = document.querySelector('.show-more');
 const formSearch = document.querySelector('.form-search');
+const navMenuSubscriptions = document.querySelector('.nav-menu-subscriptions');
 
 const createCard = (dataVideo) => {
   const imgUrl = dataVideo.snippet.thumbnails.high.url;
@@ -60,6 +61,32 @@ const createList = (wrapper, listVideo) => {
   listVideo.forEach((item) => wrapper.append(createCard(item)));
 };
 
+
+const createMenuSubscriptionsItem = (item) => {
+  console.log(item);
+  const menuItem = document.createElement('li');
+  menuItem.classList.add('nav-item');
+  menuItem.innerHTML = `
+  <a href="https://youtu.be/${item.snippet.resourceId.channelId}">
+    <img
+      src="${item.snippet.thumbnails.default.url}"
+      alt="Photo: ${item.snippet.title}"
+      class="nav-image"
+    />
+    <span class="nav-text">${item.snippet.title}</span>
+  </a>`;
+  return menuItem;
+};
+
+const createMenuSubscriptions = (data) => {
+  console.log(data);
+  navMenuSubscriptions.textContent = '';
+  data.forEach((item) =>
+    navMenuSubscriptions.append(createMenuSubscriptionsItem(item)),
+  );
+};
+
+
 // youTube API
 const authBtn = document.querySelector('.auth-btn');
 const userAvatar = document.querySelector('.user-avatar');
@@ -69,6 +96,15 @@ const handleSuccessAuth = (data) => {
   userAvatar.classList.remove('hide');
   userAvatar.src = data.getImageUrl();
   userAvatar.alt = data.getName();
+
+  requestSubscriptions((data) => {
+    console.log(data);
+    createMenuSubscriptions(data);
+  });
+
+    // requestMusic((data) => {
+    //   createList(musicList, data);
+    // });
 };
 
 const handleNoAuth = () => {
@@ -192,6 +228,7 @@ const requestSubscriptions = (callback, maxResults = 3) => {
       order: 'unread',
     })
     .execute((response) => {
+      console.log(response.items);
       callback(response.items);
     });
 };
@@ -219,3 +256,4 @@ formSearch.addEventListener('submit', (event) => {
     createList(gloAcademyList, data);
   });
 });
+
