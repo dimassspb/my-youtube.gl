@@ -5,6 +5,9 @@ const CLIENT_ID =
 const gloAcademyList = document.querySelector('.glo-academy-list');
 const trandingList = document.querySelector('.trending-list');
 const musicList = document.querySelector('.music-list');
+const navMenuMore = document.querySelector('.nav-menu-more');
+const showMore = document.querySelector('.show-more');
+const formSearch = document.querySelector('.form-search');
 
 const createCard = (dataVideo) => {
   const imgUrl = dataVideo.snippet.thumbnails.high.url;
@@ -18,7 +21,7 @@ const createCard = (dataVideo) => {
   const card = document.createElement('div');
   card.classList.add('video-card');
   card.innerHTML = `
-            
+
               <div class="video-thumb">
                 <a
                   class="link-video youtube-modal"
@@ -38,7 +41,7 @@ const createCard = (dataVideo) => {
                     ? `<span class="video-views">${viewCount} views</span>`
                     : ''
                 }
-                
+
                   <span class="video-date">${new Date(dateVideo).toLocaleString(
                     'ru-RU',
                   )}</span>
@@ -46,7 +49,7 @@ const createCard = (dataVideo) => {
                 <span class="video-channel">${channelTitle}</span>
               </div>
               <!-- /.video-info -->
-            
+
               `;
 
   return card;
@@ -57,10 +60,6 @@ const createList = (wrapper, listVideo) => {
   listVideo.forEach((item) => wrapper.append(createCard(item)));
 };
 
-createList(gloAcademyList, gloAcademy);
-createList(trandingList, trending);
-createList(musicList, music);
-
 // youTube API
 const authBtn = document.querySelector('.auth-btn');
 const userAvatar = document.querySelector('.user-avatar');
@@ -70,8 +69,6 @@ const handleSuccessAuth = (data) => {
   userAvatar.classList.remove('hide');
   userAvatar.src = data.getImageUrl();
   userAvatar.alt = data.getName();
-
-  getCannel();
 };
 
 const handleNoAuth = () => {
@@ -115,6 +112,10 @@ const initClient = () => {
       updateStatusAuth(gapi.auth2.getAuthInstance());
       authBtn.addEventListener('click', handleAuth);
       userAvatar.addEventListener('click', handleSignout);
+    })
+    .then(loadScreen)
+    .catch((e) => {
+      console.warn(e);
     });
 };
 
@@ -126,7 +127,95 @@ const getCannel = () => {
       part: 'snippet, contentDetails, statistics',
       id: 'UCVswRUcKC-M35RzgPRv8qUg',
     })
+    .execute((response) => {});
+};
+
+const requestVideos = (channelId, callback, maxResults = 6) => {
+  gapi.client.youtube.search
+    .list({
+      part: 'snippet',
+      channelId,
+      maxResults,
+      order: 'date',
+    })
     .execute((response) => {
-      console.log(response);
+      callback(response.items);
     });
 };
+
+const requestTrending = (callback, maxResults = 6) => {
+  gapi.client.youtube.videos
+    .list({
+      part: 'snippet, statistics',
+      chart: 'mostPopular',
+      regionCode: 'RU',
+      maxResults,
+    })
+    .execute((response) => {
+      callback(response.items);
+    });
+};
+
+const requestMusic = (callback, maxResults = 6) => {
+  gapi.client.youtube.videos
+    .list({
+      part: 'snippet, statistics',
+      chart: 'mostPopular',
+      regionCode: 'RU',
+      maxResults,
+      videoCategoryId: '10',
+    })
+    .execute((response) => {
+      callback(response.items);
+    });
+};
+
+const requestSearch = (searchText, callback, maxResults = 6) => {
+  gapi.client.youtube.search
+    .list({
+      q: searchText,
+      part: 'snippet',
+      maxResults,
+      order: 'relevance',
+    })
+    .execute((response) => {
+      callback(response.items);
+    });
+};
+
+const requestSubscriptions = (callback, maxResults = 3) => {
+  gapi.client.youtube.subscriptions
+    .list({
+      mine: true,
+      part: 'snippet',
+      maxResults,
+      order: 'unread',
+    })
+    .execute((response) => {
+      callback(response.items);
+    });
+};
+const loadScreen = () => {
+  requestVideos('UCVswRUcKC-M35RzgPRv8qUg', (data) => {
+    createList(gloAcademyList, data);
+  });
+  requestTrending((data) => {
+    createList(trandingList, data);
+  });
+  requestMusic((data) => {
+    createList(musicList, data);
+  });
+};
+
+showMore.addEventListener('click', (event) => {
+  event.preventDefault();
+  navMenuMore.classList.toggle('nav-menu-more-show');
+});
+
+formSearch.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const value = formSearch.elements.search.value;
+  requestSearch(value, (data) => {
+    createList(gloAcademyList, data);
+  });
+});
