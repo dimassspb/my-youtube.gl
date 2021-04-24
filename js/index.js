@@ -1,6 +1,4 @@
-const API_KEY = 'AIzaSyAfFuEw9MRssI_0OwrNiAGlAy2_3xwXh-M';
-const CLIENT_ID =
-  '406840720605-nio6i0fnbhpi9kkgmt7b52q85fi4o7ec.apps.googleusercontent.com';
+
 
 const gloAcademyList = document.querySelector('.glo-academy-list');
 const trandingList = document.querySelector('.trending-list');
