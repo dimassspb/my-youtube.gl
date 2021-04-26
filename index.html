@@ -102,7 +102,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="#" class="nav-link nav-link-liked">
             <svg class="icon icon-library" width="20" height="19">
               <use href="img/icons.svg#liked"></use>
             </svg>
@@ -124,7 +124,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link nav-link-trending">
                 <svg class="icon icon-trending" width="20" height="19">
                   <use href="img/icons.svg#trending"></use>
                 </svg>
@@ -132,7 +132,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link nav-link-subscriptions">
                 <svg class="icon icon-subscriptions" width="20" height="19">
                   <use href="img/icons.svg#subscriptions"></use>
                 </svg>
@@ -151,7 +151,7 @@
               </a>
             </li>
             <li class="nav-item nav-item-hide">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link nav-link-liked">
                 <svg class="icon icon-liked" width="20" height="19">
                   <use href="img/icons.svg#liked"></use>
                 </svg>
@@ -159,7 +159,7 @@
               </a>
             </li>
             <li class="nav-item nav-item-hide">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link nav-link-music">
                 <svg class="icon icon-music" width="20" height="19">
                   <use href="img/icons.svg#music"></use>
                 </svg>
@@ -167,7 +167,7 @@
               </a>
             </li>
             <li class="nav-item nav-item-hide">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link nav-link-games">
                 <svg class="icon icon-games" width="20" height="19">
                   <use href="img/icons.svg#games"></use>
                 </svg>
@@ -178,42 +178,13 @@
         </nav>
 
         <h2 class="nav-title">Subscriptions</h2>
-        <ul class="nav-menu-subscriptions"></ul>
+        <ul class="nav-menu subscriptions-list">
+          
+        </ul>
       </aside>
       <main class="content">
-        <div class="channel">
-          <div class="channel-header">
-            <a href="#" class="channel-title">
-              <img src="img/glo.png" alt="Glo Academy" class="channel-avatar" />
-              <span class="channel-text">Glo Academy</span>
-            </a>
-          </div>
-
-          <div class="glo-academy-list video-list"></div>
-        </div>
-
-        <div class="channel recommended">
-          <div class="channel-header">
-            <h2 class="recommended-title">Trending</h2>
-          </div>
-
-          <div class="trending-list video-list"></div>
-        </div>
-
-        <div class="channel recommended-channel">
-          <div class="channel-header">
-            <a href="#" class="channel-title recommended-channel-title">
-              <img
-                src="img/Food-Drink.png"
-                alt="Music"
-                class="channel-avatar"
-              />
-              <span class="channel-text">Music</span>
-            </a>
-          </div>
-
-          <div class="music-list video-list"></div>
-        </div>
+        <h3 class="preload">Загрузка...</h3>
+        <!-- preloader here!!! -->
       </main>
     </div>
     <!-- /.container -->
